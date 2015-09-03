@@ -5,13 +5,15 @@
  * @param z
  * @constructor
  */
-ENGINE.Vec3 = function Vec3(x, y, z) {
+ENGINE.Vec3 = function (x, y, z) {
     this.x = x || 0;
     this.y = y || 0;
     this.z = z || 0;
-}
+};
 
 ENGINE.Vec3.prototype = {
+    constructor: ENGINE.Vec3,
+
     /**
      * Définie les nouvelles coordonnées du vecteur
      * @param x
@@ -111,7 +113,7 @@ ENGINE.Vec3.prototype = {
      * Donne la longueur du vecteur
      * @returns {number}
      */
-    length: function () {
+    len: function () {
         return Math.sqrt(this.dot(this));
     },
 
@@ -120,9 +122,9 @@ ENGINE.Vec3.prototype = {
      * @returns {ENGINE.Vec3}
      */
     normalize: function () {
-        return this.divide(this.length());
+        return this.divide(this.len());
     }
-}
+};
 
 
 /**
@@ -131,6 +133,6 @@ ENGINE.Vec3.prototype = {
  * @param vec2
  * @returns {ENGINE.Vec3}
  */
-function cross(vec1, vec2) {
-    return new Vec3(vec1.y * vec2.z - vec2.y * vec1.z, vec1.z * vec2.x - vec2.z * vec1.x, vec1.x * vec2.y - vec2.x * vec1.y);
-}
+ENGINE.Vec3.cross = function (vec1, vec2) {
+    return new ENGINE.Vec3(vec1.y * vec2.z - vec2.y * vec1.z, vec1.z * vec2.x - vec2.z * vec1.x, vec1.x * vec2.y - vec2.x * vec1.y);
+};
