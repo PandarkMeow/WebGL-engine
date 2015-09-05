@@ -1,8 +1,8 @@
 /**
  * Construit un vecteur en 3 dimmension
- * @param x
- * @param y
- * @param z
+ * @param x {number}
+ * @param y {number}
+ * @param z {number}
  * @constructor
  */
 ENGINE.Vec3 = function (x, y, z) {
@@ -16,9 +16,9 @@ ENGINE.Vec3.prototype = {
 
     /**
      * Définie les nouvelles coordonnées du vecteur
-     * @param x
-     * @param y
-     * @param z
+     * @param x {number}
+     * @param y {number}
+     * @param z {number}
      * @returns {ENGINE.Vec3}
      */
     set:function(x, y, z) {
@@ -54,7 +54,7 @@ ENGINE.Vec3.prototype = {
 
     /**
      * Ajoute les coordonnées d'un vecteur à celui-ci
-     * @param vec
+     * @param vec {ENGINE.Vec3}
      * @returns {ENGINE.Vec3}
      */
     add: function (vec) {
@@ -66,7 +66,7 @@ ENGINE.Vec3.prototype = {
 
     /**
      * Soustrait les coordonnées d'un vecteur à celui-ci
-     * @param vec
+     * @param vec {ENGINE.Vec3}
      * @returns {ENGINE.Vec3}
      */
     sub: function (vec) {
@@ -78,7 +78,7 @@ ENGINE.Vec3.prototype = {
 
     /**
      * Multiplie les coordonnées du vecteur par un scalaire
-     * @param scalar
+     * @param scalar {number}
      * @returns {ENGINE.Vec3}
      */
     multiply: function (scalar) {
@@ -90,7 +90,7 @@ ENGINE.Vec3.prototype = {
 
     /**
      * Divise les coordonnées du vecteur par un scalaire
-     * @param scalar
+     * @param scalar {number}
      * @returns {ENGINE.Vec3}
      */
     divide: function (scalar) {
@@ -102,7 +102,7 @@ ENGINE.Vec3.prototype = {
 
     /**
      * Réalise le produit scalaire
-     * @param vec
+     * @param vec {ENGINE.Vec3}
      * @returns {number}
      */
     dot: function (vec) {
@@ -123,14 +123,22 @@ ENGINE.Vec3.prototype = {
      */
     normalize: function () {
         return this.divide(this.len());
+    },
+
+    /**
+     * Affiche le contenu du vecteur
+     * @returns {string}
+     */
+    toString: function () {
+        return "[" + this.x + ", " + this.y + ", " + this.z + "]";
     }
 };
 
 
 /**
  * Réalise le produit vectoriel de deux vecteurs
- * @param vec1
- * @param vec2
+ * @param vec1 {ENGINE.Vec3}
+ * @param vec2 {ENGINE.Vec3}
  * @returns {ENGINE.Vec3}
  */
 ENGINE.Vec3.cross = function (vec1, vec2) {

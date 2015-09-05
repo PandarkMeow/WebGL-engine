@@ -2,27 +2,40 @@
 <html>
     <head>
         <script type="text/javascript" src="js/engine.js"></script>
-        <script type="text/javascript" src="js/mathutils/mat4.js"></script>
+        <script type="text/javascript" src="js/mathutils/Euler.js"></script>
+        <script type="text/javascript" src="js/mathutils/Vec3.js"></script>
+        <script type="text/javascript" src="js/mathutils/Quat.js"></script>
+        <script type="text/javascript" src="js/mathutils/Mat4.js"></script>
+        <script type="text/javascript" src="js/scene/Shape.js"></script>
+        <script type="text/javascript" src="js/scene/Box.js"></script>
+        <script type="text/javascript;version=1.8" src="js/scene/Scene.js"></script>
+        <script type="text/javascript" src="js/webgl/WebGLInitializer.js"></script>
         <script type="text/javascript" src="js/main.js"></script>
 
         <script id="vert" type="x-shader/x-vertex">
             attribute vec3 aVertexPosition;
+            attribute vec4 aVertexColor;
 
             uniform mat4 uMVPMatrix;
 
+            varying vec4 vColor;
             void main() {
                 gl_Position = uMVPMatrix * vec4(aVertexPosition, 1.0);
+                vColor = aVertexColor;
             }
         </script>
         <script id="frag" type="x-shader/x-fragment">
             precision mediump float;
 
+            varying vec4 vColor;
+
             void main() {
-                gl_FragColor = vec4(0.0, 1.0, 1.0, 1.0);
+                gl_FragColor = vColor;
             }
         </script>
     </head>
     <body onload="init();">
         <canvas width="800" height="800" id="canvas"></canvas>
+        <span id="output"></span>
     </body>
 </html>

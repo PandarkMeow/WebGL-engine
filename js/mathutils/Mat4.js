@@ -46,17 +46,15 @@ ENGINE.Mat4.prototype = {
     /**
      * Translate la matrice selon les conventions en
      * WebGL
-     * @param x {number}
-     * @param y {number}
-     * @param z {number}
+     * @param trans {ENGINE.Vec3} la translation
      * @returns {ENGINE.Mat4}
      */
-    translate: function (x, y, z) {
+    translate: function (trans) {
         return this.multiply(new ENGINE.Mat4([
             1, 0, 0, 0,
             0, 1, 0, 0,
             0, 0, 1, 0,
-            x, y, z, 1
+            trans.x, trans.y, trans.z, 1
         ]));
     },
 
@@ -79,6 +77,20 @@ ENGINE.Mat4.prototype = {
             y * x * d + z * s, c + y * y * d,     y * z * d - x * s, 0,
             z * x * d - y * s, z * y * d + x * s, c + z * z * d,     0,
             0,              0,                 0,                    1
+        ]));
+    },
+
+    /**
+     * Pivote la matrice à partir d'un quaternion
+     * @param q {ENGINE.Quat}
+     * @returns {ENGINE.Mat4}
+     */
+    rotateFromQuaternion: function (q) {
+        return this.multiply(new ENGINE.Mat4([
+            1 - 2 * q.y * q.y - 2 * q.z * q.z, 2 * q.x * q.y - 2 * q.z * q.w, 2 * q.x * q.z + 2 * q.y * q.w, 0,
+            2 * q.x * q.y + 2 * q.z * q.w, 1 - 2 * q.x * q.x - 2 * q.z * q.z, 2 * q.y * q.z - 2 * q.x * q.w, 0,
+            2 * q.x * q.z - 2 * q.y * q.w, 2 * q.y * q.z + 2 * q.x * q.w, 1 - 2 * q.x * q.x - 2 * q.y * q.y, 0,
+            0, 0, 0, 1
         ]));
     },
 
@@ -124,6 +136,14 @@ ENGINE.Mat4.prototype = {
             out += ((i % 4 == 0) ? "\n" : "") + this.data[i] + " ";
         }
         return out;
+    },
+
+    /**
+     * Copie la matrice courante
+     * @returns {ENGINE.Mat4}
+     */
+    clone: function () {
+        return new ENGINE.Mat4(this.data.slice());
     }
 };
 

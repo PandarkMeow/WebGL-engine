@@ -36,13 +36,11 @@ ENGINE.Quat.prototype = {
     /**
      * Définie les coordonnées du quaternion à partir d'un
      * angle eulerien
-     * @param yaw {number} cap
-     * @param pitch {number} tanguage
-     * @param roll {number} roulis
+     * @param euler {ENGINE.Euler} rotation eulerienne
      * @returns {ENGINE.Quat}
      */
-    setEulerRotation: function (yaw, pitch, roll) {
-        var c1 = Math.cos(yaw * 0.5), c2 = Math.cos(pitch * 0.5), c3 = Math.cos(roll * 0.5), s1 = Math.sin(yaw * 0.5), s2 = Math.sin(pitch * 0.5), s3 = Math.sin(roll * 0.5);
+    fromEuler: function (euler) {
+        var c1 = Math.cos(euler.yaw * 0.5), c2 = Math.cos(euler.pitch * 0.5), c3 = Math.cos(euler.roll * 0.5), s1 = Math.sin(euler.yaw * 0.5), s2 = Math.sin(euler.pitch * 0.5), s3 = Math.sin(euler.roll * 0.5);
 
         // Similaire à la multiplication de 3 quaternions, mais moins gourmand.
         // Trouvé sur : www.euclideanspace.com
@@ -51,6 +49,20 @@ ENGINE.Quat.prototype = {
         this.y = s1 * c2 * c3 + c1 * s2 * s3;
         this.z = c1 * s2 * c3 - s1 * c2 * s3;
         return this;
+    },
+
+    /**
+     * Definie les coordonnées du quaternion à partir d'une matrice
+     * de rotation
+     * @param mat {ENGINE.Mat4} la matrice de rotation
+     * @returns {ENGINE.Quat}
+     */
+    setFromMatrix: function (mat) {
+        var w = Math.sqrt(1 + mat.data[0] + mat.data[5] + mat.data[10]) / 2;
+        var x = (mat.data[9] - mat.data[6]) / (4 * w);
+        var y = (mat.data[2] - mat.data[8]) / (4 * w);
+        var z = (mat.data[4] - mat.data[1]) / (4 * w);
+        return this.set(w, x, y, z);
     },
 
     /**
@@ -161,5 +173,25 @@ ENGINE.Quat.prototype = {
     inverse: function () {
         var length = this.length();
         return this.conjugate().scale(1.0 / (length * length));
+    },
+
+    /**
+     * Convertie le quaternion en angles euleriens
+     * @returns {ENGINE.Euler}
+     */
+    toEuler: function () {
+        var x = this.x, y = this.y, z = this.z, w = this.w;
+        var yaw = Math.atan2(2 * y * w - 2 * x * z, 1 - 2 * y * y - 2 * z * z);
+        var pitch = Math.asin(2 * x * y + 2 * z * w);
+        var roll = Math.atan2(2 * x * w - 2 * y * z, 1 - 2 * x * x - 2 * z * z);
+        return new ENGINE.Euler(yaw, pitch, roll);
+    },
+
+    /**
+     * Affiche le contenu du quaternion
+     * @returns {string}
+     */
+    toString: function () {
+        return "[" + this.w + ", " + this.x + " " + this.y + " " + this.z + "]";
     }
 };
