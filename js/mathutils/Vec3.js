@@ -29,6 +29,18 @@ ENGINE.Vec3.prototype = {
     },
 
     /**
+     * Charge le contenu d'un vecteur dans celui-ci
+     * @param vec {ENGINE.Vec3}
+     * @returns {ENGINE.Vec3}
+     */
+    load: function (vec) {
+        this.x = vec.x;
+        this.y = vec.y;
+        this.z = vec.z;
+        return this;
+    },
+
+    /**
      * Retourne l'abscisse du vecteur
      * @returns {number}
      */
@@ -144,3 +156,15 @@ ENGINE.Vec3.prototype = {
 ENGINE.Vec3.cross = function (vec1, vec2) {
     return new ENGINE.Vec3(vec1.y * vec2.z - vec2.y * vec1.z, vec1.z * vec2.x - vec2.z * vec1.x, vec1.x * vec2.y - vec2.x * vec1.y);
 };
+
+/**
+ * Applique une rotation à un vecteur
+ * @param vec {ENGINE.Vec3} le vecteur à pivoter
+ * @param quat {ENGINE.Quat} le quaternion représentant la rotation
+ * @returns {ENGINE.Vec3}
+ */
+ENGINE.Vec3.quatTransform = function (vec, quat) {
+    var vecPart = quat.getImaginary();
+    var v = ENGINE.Vec3.cross(vecPart, vec).multiply(2);
+    return ENGINE.Vec3.cross(vecPart, v).add(vec).add(v.multiply(quat.getReal()));
+}

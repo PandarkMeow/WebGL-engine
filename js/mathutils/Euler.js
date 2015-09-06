@@ -22,5 +22,9 @@ ENGINE.Euler.prototype = {
         this.pitch += euler.pitch;
         this.roll += euler.roll;
         return this;
+    },
+
+    toString: function () {
+        return this.yaw + " " + this.pitch + " " + this.roll;
     }
 }

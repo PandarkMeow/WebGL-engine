@@ -5,9 +5,11 @@
 ENGINE.Scene = function() {
     this.shapes = [];
 
+    this.camera = new ENGINE.Camera().setPositionRotation(new ENGINE.Vec3(2, 0, 0), new ENGINE.Euler(0, 0, 0));
+
     this.mvMatrixArray = [];
     this.mvMatrix = new ENGINE.Mat4();
-    this.pMatrix = new ENGINE.Mat4().perspective(Math.PI / 2, Math.PI / 2, -1, 1); // TODO changer le type de camera grâce aux paramètres de la classe ENGINE
+    this.pMatrix = new ENGINE.Mat4().perspective(Math.PI / 2, ENGINE.GL.viewportWidth / ENGINE.GL.viewportHeight, -0.01, 1); // TODO changer le type de camera grâce aux paramètres de la classe ENGINE
 
     ENGINE.GL.clearColor(0.0, 0.0, 0.0, 1.0);
     ENGINE.GL.enable(ENGINE.GL.DEPTH_TEST);
@@ -50,7 +52,7 @@ ENGINE.Scene.prototype = {
      */
     setMVPMatrix: function () {
         var mvpMatrix = this.pMatrix.clone();
-        mvpMatrix.multiply(this.mvMatrix);
+        mvpMatrix.multiply(this.camera.getViewMatrix()).multiply(this.mvMatrix);
         ENGINE.GL.uniformMatrix4fv(ENGINE.shaderProgram.mvpMatrixUniform, false, mvpMatrix.data);
     },
 

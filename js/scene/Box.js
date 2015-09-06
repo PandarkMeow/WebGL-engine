@@ -54,12 +54,12 @@ ENGINE.Box = function(position, rotation, width, height, depth) {
     this.vertexColorBuffer = GL.createBuffer();
     GL.bindBuffer(GL.ARRAY_BUFFER, this.vertexColorBuffer);
     var colors = [
-        [1.0, 0.0, 0.0, 1.0], // Front face
-        [1.0, 1.0, 0.0, 1.0], // Back face
-        [0.0, 1.0, 0.0, 1.0], // Top face
-        [1.0, 0.5, 0.5, 1.0], // Bottom face
-        [1.0, 0.0, 1.0, 1.0], // Right face
-        [0.0, 0.0, 1.0, 1.0]  // Left face
+        [1.0, 0.0, 0.0, 1.0],
+        [1.0, 1.0, 0.0, 1.0],
+        [0.0, 1.0, 0.0, 1.0],
+        [1.0, 0.5, 0.5, 1.0],
+        [1.0, 0.0, 1.0, 1.0],
+        [0.0, 0.0, 1.0, 1.0]
     ];
     var unpackedColors = [];
     for (var i in colors) {
@@ -95,6 +95,7 @@ ENGINE.Box.constructor = ENGINE.Box;
  * @param scene {ENGINE.Scene} la scène d'affichage
  */
 ENGINE.Box.prototype.renderShape = function(scene) {
+    //TODO voir si code redondant dans les autre classes de formes, pour les regrouper dans la classe shape
     var GL = ENGINE.GL;
 
     GL.bindBuffer(GL.ARRAY_BUFFER, this.vertexPositionBuffer);
